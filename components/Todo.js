@@ -5,18 +5,14 @@ class Todo {
   }
 
   _setEventListeners() {
-    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-
-    this._todoCheckboxEl.addEventListener("change", () => {
-      this._data.completed = !this._todoCheckboxEl.checked;
-
-      this._todoElement.classList.toggle("todo_completed");
-    });
-
     this._todoCheckboxEl.addEventListener("change", () => {
       this._data.completed = this._todoCheckboxEl.checked;
 
-      this._todoElement.classList.toggle("todo_completed");
+      if (this._data.completed) {
+        this._todoElement.classList.add("todo_completed");
+      } else {
+        this._todoElement.classList.remove("todo_completed");
+      }
     });
 
     const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
