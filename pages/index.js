@@ -4,7 +4,7 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
-import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithForm from "../components/PopupWithForms.js";
 import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
@@ -51,15 +51,14 @@ const addTodoPopup = new PopupWithForm({
 
 addTodoPopup.setEventListeners();
 
-function handleEscapeClose(evt) {
+handleEscapeClose = (evt) => {
   if (evt.key === "Escape") {
-    close();
+    this.close();
   }
-}
+};
 
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
-  document.addEventListener("keyup, handleEscapeClose");
 });
 
 const addTodoForm = document.querySelector("#add-todo-popup .popup__form");

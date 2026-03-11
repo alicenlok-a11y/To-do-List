@@ -32,4 +32,4 @@ State synchronization between UI and data
 
 This project is deployed on GitHub Pages:
 
-- [ADD LINK HERE](https://alicenlok-a11y.github.io/To-do-List/)
+- [](https://alicenlok-a11y.github.io/To-do-List/)
