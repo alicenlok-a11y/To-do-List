@@ -3,25 +3,44 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 
 import Todo from "../components/Todo.js";
+import TodoCounter from "../components/TodoCounter.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 
-// Function to generate a todo element
+// Create counter
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
+
+// Create todo element
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(
+    data,
+    "#todo-template",
+    (increment) => {
+      todoCounter.updateCompleted(increment);
+    },
+    () => {
+      todoCounter.updateTotal(false);
+    },
+  );
+
   return todo.getView();
 };
 
-// Create section instance
+// Function to create and add a todo
+const renderTodo = (item) => {
+  const todoElement = generateTodo(item);
+  todoSection.addItem(todoElement);
+};
+
+// Create section
 const todoSection = new Section(
   {
     items: initialTodos,
     renderer: (item) => {
-      const todoElement = generateTodo(item);
-      todoSection.addItem(todoElement);
+      renderTodo(item);
     },
   },
   ".todos__list",
@@ -30,14 +49,13 @@ const todoSection = new Section(
 // Render initial todos
 todoSection.renderItems();
 
-// Create popup instance
+// Create popup
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
 
   handleFormSubmit: (formData) => {
     let date = new Date(formData.date);
 
-    // Fix timezone issue only if date exists
     if (!isNaN(date)) {
       date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     } else {
@@ -51,14 +69,17 @@ const addTodoPopup = new PopupWithForm({
       completed: false,
     };
 
-    const todoElement = generateTodo(newTodo);
-    todoSection.addItem(todoElement);
+    renderTodo(newTodo);
+
+    // update counter
+    todoCounter.updateTotal(true);
+
+    newTodoValidator.resetValidation();
 
     addTodoPopup.close();
   },
 });
 
-// Enable popup listeners
 addTodoPopup.setEventListeners();
 
 // Open popup
