@@ -9,13 +9,13 @@ import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 
-// Create a todo element
+// Function to generate a todo element
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   return todo.getView();
 };
 
-// Create the todo list section
+// Create section instance
 const todoSection = new Section(
   {
     items: initialTodos,
@@ -30,15 +30,18 @@ const todoSection = new Section(
 // Render initial todos
 todoSection.renderItems();
 
-// Create popup
+// Create popup instance
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
 
   handleFormSubmit: (formData) => {
-    const date = new Date(formData.date);
+    let date = new Date(formData.date);
 
+    // Fix timezone issue only if date exists
     if (!isNaN(date)) {
       date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+    } else {
+      date = "";
     }
 
     const newTodo = {
@@ -55,10 +58,12 @@ const addTodoPopup = new PopupWithForm({
   },
 });
 
+// Enable popup listeners
 addTodoPopup.setEventListeners();
 
 // Open popup
 addTodoButton.addEventListener("click", () => {
+  newTodoValidator.resetValidation();
   addTodoPopup.open();
 });
 

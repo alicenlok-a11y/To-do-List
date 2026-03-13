@@ -5,14 +5,15 @@ class Section {
     this._container = document.querySelector(containerSelector);
   }
 
-  renderer: (item) => {
-  const todo = createTodo(item);
-  section.addItem(todo);
-}
+  renderItems() {
+    this._items.forEach((item) => {
+      this._renderer(item);
+    });
+  }
 
   addItem(element) {
-  this._items.unshift(element);
-  this._container.prepend(element);
+    this._container.prepend(element);
+  }
 }
 
 export default Section;
