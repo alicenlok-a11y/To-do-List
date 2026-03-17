@@ -84,12 +84,10 @@ addTodoPopup.setEventListeners();
 
 // Open popup
 addTodoButton.addEventListener("click", () => {
-  newTodoValidator.resetValidation();
   addTodoPopup.open();
 });
 
 // Form validation
-const addTodoForm = document.querySelector("#add-todo-popup .popup__form");
-
+const addTodoForm = document.forms["add-todo-form"];
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
